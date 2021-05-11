@@ -30,6 +30,7 @@ import { ParentSize } from "@visx/responsive";
 import { useQuery } from "@apollo/client";
 
 function IndexPage() {
+  
   const {
     data: { tokens },
   } = useQuery(tokensQuery);
@@ -153,19 +154,15 @@ function IndexPage() {
 export async function getStaticProps() {
   const client = getApollo();
 
-  await getDayData(client);
-
-  await getEthPrice(client);
-
-  await getOneDayEthPrice(client);
-
-  await getSevenDayEthPrice(client);
-
-  await getTokens(client);
-
-  await getPairs(client);
-
-  await getPools(client);
+  await Promise.all([
+    getDayData(client),
+    getEthPrice(client),
+    getOneDayEthPrice(client),
+    getSevenDayEthPrice(client),
+    getTokens(client),
+    getPairs(client),
+    getPools(client)
+  ])
 
   return {
     props: {
